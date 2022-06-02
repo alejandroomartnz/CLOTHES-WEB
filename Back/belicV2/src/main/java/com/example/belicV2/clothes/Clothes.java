@@ -1,7 +1,12 @@
 package com.example.belicV2.clothes;
 
 
+import com.example.belicV2.image.Image;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Clothes")
@@ -25,6 +30,17 @@ public class Clothes {
 
     @Column(name = "price")
     private float price;
+
+    @ManyToMany
+    @JoinTable(
+            name = "clothes_imgs",
+            joinColumns = @JoinColumn(name = "clothes_id"),
+            inverseJoinColumns = @JoinColumn(name = "img_id")
+    )
+    private Set<Image> imgs = new HashSet<>();
+
+
+
 
     public Clothes(Integer id, String size, String name, String desc, String type, float price) {
         this.id = id;
@@ -94,6 +110,14 @@ public class Clothes {
         this.price = price;
     }
 
+    public Set<Image> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(Set<Image> imgs) {
+        this.imgs = imgs;
+    }
+
     @Override
     public String toString() {
         return "Clothes{" +
@@ -104,5 +128,10 @@ public class Clothes {
                 ", type='" + tipo + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+
+    public void enrrol(Image image) {
+        imgs.add(image);
     }
 }
